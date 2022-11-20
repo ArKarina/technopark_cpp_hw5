@@ -2,10 +2,10 @@ run: build
   ./build/app
 
 format:
-  clang-format --dry-run --Werror src/*.cpp include/*.h
+  clang-format -std=c++11 --dry-run --Werror src/*.cpp include/*.h
 
 tidy: cmake
-  clang-tidy -p build src/*.cpp include/*.h
+  clang-tidy -std=c++11 -p build src/*.cpp include/*.h
 
 build: cmake
   ninja -Cbuild
@@ -17,7 +17,7 @@ app:
   cd build && ./app
 
 tests:
-  cd build && cd test && ./MatrixCalculatorTests
+  cd build && cd test && ./SetTests
 clean:
   rm -r build
   
