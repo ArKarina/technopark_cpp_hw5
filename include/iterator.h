@@ -6,9 +6,11 @@
 #include "errors.h"
 #include "set.h"
 
-template <typename T> struct Node;
+template <typename T> 
+struct Node;
 
-template <typename T> class Set;
+template <typename T> 
+class Set;
 
 template <typename T>
 class Iterator

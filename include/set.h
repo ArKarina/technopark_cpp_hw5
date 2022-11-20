@@ -10,6 +10,9 @@
 enum node_color { red, black };
 
 template <typename T> 
+class Iterator;
+
+template <typename T> 
 struct Node {
   Node()
       : data(T()), color(black), left(nullptr), right(nullptr),
