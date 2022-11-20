@@ -14,7 +14,7 @@ jobs:
       - name: version
         run: clang-format --version
       - name: format
-        run: clang-format --dry-run --Werror src/*.cpp include/*.h
+        run: clang-format --dry-run --Werror src/*.cpp
   tidy:
     runs-on: ubuntu-latest
     needs: format
