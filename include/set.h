@@ -263,7 +263,7 @@ private:
   }
 
   void fixTreeDelete(Node<T> *node) {
-    Node<T> *brother, *child_left, *child_right;
+    Node<T> *brother, *child_left;
     while (node != root && node->color == black) {
       if (node->parent->left == node)
         brother = node->parent->right;
@@ -288,7 +288,6 @@ private:
         node = node->parent;
       } else {
         child_left = brother->left;
-        child_right = brother->right;
         if (child_left->color == red) {
           brother->color = red;
           child_left->color = black;
