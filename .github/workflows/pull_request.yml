@@ -73,7 +73,7 @@ jobs:
           name: build
           path: build
       - name: test run
-        run: chmod +x build/test/test && ./build/test/test
+        run: chmod +x build/test/SetTests && ./build/test/SetTests
       - name: gcov 
         run: cd build/test && gcov CMakeFiles/test.dir/*.gcno
       - name: lcov

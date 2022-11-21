@@ -16,11 +16,8 @@ template <typename T>
 class Iterator
     : public std::iterator<std::bidirectional_iterator_tag, const T> {
 public:
-  // Iterator() : set(nullptr), elem(nullptr), leaf(new Node<T>) {}
   Iterator() : set(nullptr), elem(nullptr) {}
   Iterator(const Set<T> *set, Node<T> *elem) : set(set), elem(elem) {}
-  // Iterator(const Set<T> *set, Node<T> * elem) : set(set), elem(elem),
-  // leaf(new Node<T>) {}
   ~Iterator() = default;
 
   bool operator==(const Iterator<T> &iterator) const {
