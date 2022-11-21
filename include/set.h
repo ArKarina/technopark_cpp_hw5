@@ -36,7 +36,8 @@ class Set {
 public:
   Set() : size_(0), leaf(new Node<T>), root(leaf) {}
 
-  template <class Iter> Set(Iter First, Iter Last) : Set() {
+  template <class Iter> 
+  Set(Iter First, Iter Last) : Set() {
     while (First != Last) {
       insertElem(*First);
       ++First;
