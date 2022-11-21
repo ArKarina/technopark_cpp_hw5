@@ -1,0 +1,82 @@
+name: ci pull request
+
+on:
+  push:
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3 
+      - name: version
+        run: clang-format --version
+      - name: format
+        run: clang-format --dry-run --Werror src/*.cpp
+  tidy:
+    runs-on: ubuntu-latest
+    needs: format
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3 
+      - name: version
+        run: clang-format --version && cmake --version
+      - name: cmake
+        run: cmake -B${{github.workspace}}/build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+      - name: tidy
+        run: clang-tidy -p build src/*.cpp include/*.h
+  build:
+    runs-on: ubuntu-latest
+    needs: tidy
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3 
+      - name: install ninja
+        run: sudo apt install ninja-build
+      - name: version
+        run: cmake --version && ninja --version
+      - name: cmake
+        run: cmake -Bbuild -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+      - name: build
+        run: ninja -Cbuild
+      - name: save build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3 
+      - name: get build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - name: test run
+        run: chmod +x build/test/SetTests && ./build/test/SetTests
+  coverage:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
+        run: sudo apt install lcov
+      - name: build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - name: test run
+        run: chmod +x build/test/SetTests && ./build/test/SetTests
+      - name: gcov 
+        run: cd build/test && gcov CMakeFiles/SetTests.dir/*.gcno
+      - name: lcov
+        run: lcov --capture --directory build/test/CMakeFiles/SetTests.dir --output-file build/gtest_coverage.info
+      - name: coverage
+        run: lcov --remove build/gtest_coverage.info '/usr/*' --output-file build/gtest_coverage.info.cleaned
