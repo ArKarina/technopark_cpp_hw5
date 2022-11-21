@@ -3,6 +3,7 @@ project(Set)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra -Wpedantic -Werror -fprofile-arcs -ftest-coverage -fPIC -O0")
+set(CMAKE_EXE_LINKER_FLAGS  ${CMAKE_EXE_LINKER_FLAGS} "-coverage -lgcov")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB SRC ${PROJECT_SOURCE_DIR}/src/main.cpp)
