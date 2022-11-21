@@ -59,3 +59,24 @@ jobs:
           path: build
       - name: test run
         run: chmod +x build/test/SetTests && ./build/test/SetTests
+  coverage:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
+        run: sudo apt install lcov
+      - name: build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - name: test run
+        run: chmod +x build/test/test && ./build/test/test
+      - name: gcov 
+        run: cd build/test && gcov CMakeFiles/test.dir/*.gcno
+      - name: lcov
+        run: lcov --capture --directory build/test/CMakeFiles/test.dir --output-file build/gtest_coverage.info
+      - name: coverage
+        run: lcov --remove build/gtest_coverage.info '/usr/*' --output-file build/gtest_coverage.info.cleaned
