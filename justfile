@@ -20,4 +20,3 @@ tests:
   cd build && cd test && ./SetTests
 clean:
   rm -r build
-  
